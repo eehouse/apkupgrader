@@ -1,1 +1,1 @@
-include ':app', ':nbsplib', ':apkupgrader'
+include ':app', ':apkupgrader'
