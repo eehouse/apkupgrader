@@ -1,0 +1,6 @@
+<resources>
+  <!-- Do I need this??? -->
+  <string name="toast_nothing_newer_fmt">There is no newer version of %s available.</string>
+  <string name="notify_title_fmt">Upgrade of %s available</string>
+  <string name="notify_body">Tap to download and install</string>
+</resources>
