@@ -10,6 +10,7 @@
   <TextView android:id="@+id/dwnld_message"
             android:layout_width="fill_parent" 
 	        android:layout_height="wrap_content"
+            android:text="dwnld_message"
             />
 
   <ProgressBar android:id="@+id/progress_bar"

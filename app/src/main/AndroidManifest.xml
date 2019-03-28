@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest package="org.eehouse.android.nbsp"
+          xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <uses-permission android:name="android.permission.RECEIVE_SMS" />
+  <uses-permission android:name="android.permission.SEND_SMS" />
+  <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+  <application
+      android:name=".NBSPApp"
+      android:allowBackup="true"
+      android:icon="@mipmap/ic_launcher"
+      android:label="@string/app_name"
+      android:roundIcon="@mipmap/ic_launcher_round"
+      android:supportsRtl="true"
+      android:theme="@style/AppTheme">
+
+    <activity android:name=".ui.MainActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity>
+
+    <receiver android:name="RequestReceiver" >
+      <intent-filter>
+        <action android:name="android.intent.action.SEND" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <data android:mimeType="text/nbsdata_tx" />
+      </intent-filter>
+    </receiver>
+
+    <receiver android:name="NBSReceiver" >
+      <intent-filter>
+        <action android:name="android.intent.action.DATA_SMS_RECEIVED" />
+        <data android:scheme="sms" />
+        <data android:port="@string/nbsp_port" />
+        <data android:host="*" />
+      </intent-filter>
+    </receiver>
+
+  </application>
+</manifest>

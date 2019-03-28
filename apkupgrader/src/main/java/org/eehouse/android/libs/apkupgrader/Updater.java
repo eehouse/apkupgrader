@@ -139,14 +139,12 @@ public class Updater {
         private String mMd5Sum;
         private String mChannelID;
         private int mIconID;
-        private String mAppName;
 
         public FetchTask( Context context, String appID, int versionCode, String buildType,
                           String flavor, String md5Sum, String channelID, int iconID )
         {
             mContext = context;
             mAppID = appID;
-            mAppName = nameFor( context, appID );
             mVersionCode = versionCode;
             mBuildType = buildType;
             mFlavor = flavor;
@@ -231,7 +229,7 @@ public class Updater {
                             String msg = mContext.getString(R.string.toast_nothing_newer_fmt, "foo");
                             Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
                         } else {
-                            Intent intent = DwnldActivity.makeIntent( mContext, url, mAppID, mAppName );
+                            Intent intent = DwnldActivity.makeIntent( mContext, url, mAppID );
                             postLaunchNotification( intent );
                         }
                     }
@@ -245,11 +243,13 @@ public class Updater {
             PendingIntent pi = PendingIntent
                 .getActivity( mContext, 1000, intent, PendingIntent.FLAG_ONE_SHOT );
 
+            String appName = nameFor( mContext, mAppID );
+
             Notification notification =
                 new NotificationCompat.Builder( mContext, mChannelID )
                 .setContentIntent( pi )
                 .setSmallIcon( mIconID )
-                .setContentTitle( mContext.getString(R.string.notify_title_fmt, mAppName) )
+                .setContentTitle( mContext.getString(R.string.notify_title_fmt, appName) )
                 .setContentText( mContext.getString(R.string.notify_body) )
                 .setAutoCancel( true )
                 .build();

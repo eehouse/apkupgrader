@@ -11,7 +11,7 @@
   <application>
     <!-- use ${applicationId} or something like that.... -->
     <provider android:name="android.support.v4.content.FileProvider"
-              android:authorities="${applicationId}.provider"
+              android:authorities="org.eehouse.android.nbsp.provider"
               android:exported="false"
               android:grantUriPermissions="true"
               >

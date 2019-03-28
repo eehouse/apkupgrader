@@ -1,10 +1,6 @@
 <resources>
-  <!-- Toast when users asks for upgrade and there's nothing newer on server -->
+  <!-- Do I need this??? -->
   <string name="toast_nothing_newer_fmt">There is no newer version of %s available.</string>
-  <!-- title of notification offering upgrade -->
   <string name="notify_title_fmt">Upgrade of %s available</string>
-  <!-- body of notification offering upgrade -->
   <string name="notify_body">Tap to download and install</string>
-  <!-- title of downloading progress dialog -->
-  <string name="downloading_msg_fmg">Downloading upgrade for %s"</string>
 </resources>

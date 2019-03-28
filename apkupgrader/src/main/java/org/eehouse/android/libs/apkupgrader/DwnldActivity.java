@@ -32,7 +32,6 @@ import android.util.Log;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -46,15 +45,12 @@ public class DwnldActivity extends Activity {
 
     private static final String KEY_URL = "url";
     private static final String KEY_APPID = "appid";
-    private static final String KEY_APPNAME = "name";
 
-    public static Intent makeIntent(Context context, String url, String appID, String appName )
+    public static Intent makeIntent(Context context, String url, String appID )
     {
         Intent intent = new Intent( context, DwnldActivity.class )
             .putExtra( KEY_URL, url )
-            .putExtra( KEY_APPID, appID )
-            .putExtra( KEY_APPNAME, appName )
-            ;
+            .putExtra( KEY_APPID, appID );
         return intent;
     }
 
@@ -77,11 +73,9 @@ public class DwnldActivity extends Activity {
     {
         Intent intent = getIntent();
         String url = intent.getStringExtra(KEY_URL);
+        Log.d( TAG, "got url: " + url );
         String appID = intent.getStringExtra(KEY_APPID);
-        String appName = intent.getStringExtra(KEY_APPNAME);
-
-        TextView label = (TextView)findViewById( R.id.dwnld_message );
-        label.setText( getString(R.string.downloading_msg_fmg, appName ) );
+        Log.d( TAG, "got appID: " + appID );
 
         new DownloadFilesTask(url, appID).execute();
     }

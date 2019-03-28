@@ -1,0 +1,52 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 27
+    defaultConfig {
+        applicationId "org.eehouse.android.nbsp"
+        minSdkVersion 14
+        targetSdkVersion 27
+        versionCode 4
+        versionName "0.2.3"     // should match NBSP_VERSION
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        debug {
+            def path = System.getenv("DEBUG_KEYSTORE_PATH")
+            if (! path) {
+                path = "./debug.keystore"
+            }
+            storeFile file(path)
+            keyAlias "androiddebugkey"
+            storePassword "android"
+            keyPassword "android"
+        }
+    }
+
+    buildTypes {
+		all {
+			resValue "string", "nbsp_port", "4369"
+		}
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+ext {
+  supportLibVersion = '27.1.1'  // variable that can be referenced to keep support libs consistent
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:${supportLibVersion}'
+    implementation "com.android.support:design:${supportLibVersion}"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation project(path: ':nbsplib')
+    implementation project(path: ':apkupgrader')
+}
