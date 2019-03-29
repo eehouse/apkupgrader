@@ -73,8 +73,9 @@ public class Updater {
      * @param(flavor) your app's versionCode (likely BuildConfig.FLAVOR)
      */
     
-    public static void run( Context context, String appID, int versionCode,
-                            String buildType, String flavor, String channelID, int iconID )
+    protected static void run( Context context, String appID, int versionCode,
+                               String buildType, String flavor, String channelID,
+                               int iconID, boolean showToast )
     {
         PackageManager  pm = context.getPackageManager();
         try {
@@ -82,7 +83,8 @@ public class Updater {
             String sum = figureMD5( new File( pi.applicationInfo.sourceDir ) );
             Log.d( TAG, "got sum for " + pi.applicationInfo.sourceDir + ": " + sum );
 
-            new FetchTask(context, appID, versionCode, buildType, flavor, sum, channelID, iconID)
+            new FetchTask(context, appID, versionCode, buildType, flavor,
+                          sum, channelID, iconID, showToast )
                 .execute();
         } catch ( PackageManager.NameNotFoundException e ) {
         }
@@ -140,9 +142,11 @@ public class Updater {
         private String mChannelID;
         private int mIconID;
         private String mAppName;
+        private boolean mShowToast;
 
         public FetchTask( Context context, String appID, int versionCode, String buildType,
-                          String flavor, String md5Sum, String channelID, int iconID )
+                          String flavor, String md5Sum, String channelID, int iconID,
+                          boolean showToast )
         {
             mContext = context;
             mAppID = appID;
@@ -153,6 +157,7 @@ public class Updater {
             mChannelID = channelID;
             mIconID = iconID;
             mAppName = nameFor( mContext, mAppID );
+            mShowToast = showToast;
         }
 
         @Override
@@ -171,8 +176,8 @@ public class Updater {
                 Map<String, String> paramsMap = new HashMap<String, String>();
                 paramsMap.put( "params", paramsStr );
                 paramsStr = getPostDataString( paramsMap );
-            
-                String url = "https://eehouse.org/apk_updater.py/check";
+
+                String url = ApkUpgrader.getUrl( mContext );
                 HttpURLConnection conn = (HttpURLConnection)new URL(url).openConnection();
 
                 conn.setRequestMethod( "POST" );
@@ -228,8 +233,10 @@ public class Updater {
                     if ( json.optBoolean( "success", false ) ) {
                         String url = json.optString("url", null);
                         if ( url == null ) { // nothing there!
-                            String msg = mContext.getString(R.string.toast_nothing_newer_fmt, "foo");
-                            Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
+                            if ( mShowToast ) {
+                                String msg = mContext.getString(R.string.toast_nothing_newer_fmt, "foo");
+                                Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
+                            }
                         } else {
                             Intent intent = DwnldActivity.makeIntent( mContext, url, mAppID, mAppName );
                             postLaunchNotification( intent );
